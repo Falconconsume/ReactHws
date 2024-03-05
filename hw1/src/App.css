@@ -1,0 +1,16 @@
+.brand {
+    margin:25px 0px;
+}
+.table {
+    border: 1px solid #333;
+}
+
+.description {
+    border: 5px solid #5521b4;
+}
+
+.flex {
+    display:flex;
+    flex-direction:column;
+    text-align: start;
+}
