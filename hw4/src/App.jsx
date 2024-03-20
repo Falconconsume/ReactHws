@@ -7,6 +7,10 @@ class App extends Component {
     this.state = {
       list: [],
       inputValue: "",
+      newTodo: {
+        title: "",
+        completed: false,
+      },
     };
   }
 
@@ -110,35 +114,103 @@ class App extends Component {
     }
   }
 
+  handleTitle(e) {
+    this.setState((prevState) => ({
+      newTodo: { ...prevState.newTodo, title: e.target.value },
+    }));
+  }
+
+  handleCompleted(e) {
+    this.setState((prevState) => ({
+      newTodo: { ...prevState.newTodo, completed: e.target.checked },
+    }));
+  }
+
+  async handleSubmitAddTodo(e) {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(this.state.newTodo),
+        }
+      );
+      const json = await response.json();
+
+      this.setState((prevState) => ({
+        list: [...prevState.list, json],
+      }));
+      this.handleSubmit(e, json.id);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   render() {
-    const { list } = this.state;
-    return list.length ? (
-      <ul>
-        {list.map((item) => (
-          <li className="list" key={item.id}>
-            <form
-              className="form"
-              onSubmit={(e) => this.handleSubmit(e, item.id)}
-            >
-              {item.title}{" "}
-              <input
-                type="checkbox"
-                defaultChecked={item.completed}
-                onChange={() => this.handleCheckBox(item)}
-              />
-              <input
-                type="text"
-                onChange={(e) => this.setInputValue(e, item.id)}
-              />
-              <button type="submit">Submit</button>
-              <button type="button" onClick={() => this.handleDelete(item.id)}>
-                Delete
-              </button>
-            </form>
-          </li>
-        ))}
-      </ul>
-    ) : null;
+    const { list, newTodo } = this.state;
+
+    return (
+      <>
+        <form
+          className="formAddTodo"
+          onSubmit={this.handleSubmitAddTodo.bind(this)}
+        >
+          <label>
+            Title:{" "}
+            <input
+              type="text"
+              defaultValue={newTodo.title}
+              onChange={this.handleTitle.bind(this)}
+            />
+          </label>
+          <label>
+            Completed:{" "}
+            <input
+              type="checkbox"
+              defaultValue={newTodo.completed}
+              onChange={this.handleCompleted.bind(this)}
+            />
+          </label>
+          <button>Add todo</button>
+        </form>
+        {list.length ? (
+          <ul>
+            {list.map((item) => (
+              <li className="list" key={item.id}>
+                <form
+                  className="form"
+                  onSubmit={(e) => this.handleSubmit(e, item.id)}
+                >
+                  {item.title}{" "}
+                  <input
+                    type="checkbox"
+                    defaultChecked={item.completed}
+                    onChange={() => this.handleCheckBox(item)}
+                  />
+                  <input
+                    type="text"
+                    onChange={(e) => this.setInputValue(e, item.id)}
+                  />
+                  <button type="submit">Submit</button>
+                  <button
+                    type="button"
+                    onClick={() => this.handleDelete(item.id)}
+                  >
+                    Delete
+                  </button>
+                </form>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        ;
+      </>
+    );
   }
 }
 

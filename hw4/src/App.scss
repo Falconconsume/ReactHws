@@ -25,11 +25,7 @@ ul {
         padding: 10px;
     }
 }
-input {
-    width:200px;
-    margin:auto 0;
-    text-align: start;
-}
+
 
 
 
@@ -49,4 +45,14 @@ button:hover {
     background-color: antiquewhite;
     color: #333;
     cursor: pointer;
+}
+
+.formAddTodo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+    border: 1px solid black;
+    width: fit-content;
+    padding: 10px;
 }

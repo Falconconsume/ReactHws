@@ -16,7 +16,9 @@ export default class List extends Component {
       this.setState((prevState) => ({
         hilightedIndex: [...prevState.hilightedIndex, randomIndex],
         borderTable: shouldAddBorder,
-        changeBorderTable: changeBorder ? !prevState.changeBorderTable : prevState.changeBorderTable,
+        changeBorderTable: changeBorder
+          ? !prevState.changeBorderTable
+          : prevState.changeBorderTable,
       }));
     }, 2000);
   }
