@@ -1,0 +1,80 @@
+.inputs {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.formInputUser {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 2px solid black;
+  padding: 35px;
+}
+
+.title {
+  text-align: center;
+}
+
+.infoSection {
+  padding: 10px;
+  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.btn-reset {
+  font-weight: 700;
+  font-size: 1rem;
+  width: 100px;
+  height: 25px;
+  margin: 0 auto;
+}
+
+.login {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.btn-fight {
+  margin: 100px auto;
+  display: flex; 
+  height: 25px;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 20px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.error {
+  font-size: 1rem;
+  color: red;
+  font-weight: 700;
+}
+
+.img {
+  width: 225px;
+}
+
+.btn-submit {
+  width: 100px;
+  height: 30px;
+  margin: 0 auto;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.resultBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.txtResult {
+  text-align: center;
+  font-weight: 700;
+  font-size: 22px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
