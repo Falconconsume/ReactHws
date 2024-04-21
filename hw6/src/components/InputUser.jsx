@@ -22,7 +22,7 @@ export default function InputUser({ number, lifting, error }) {
           onChange={(e) => setInput(e.target.value)}
         />
         <p className="error">{error}</p>
-        <button className="btn-submit" type="submit">
+        <button className="btn-submit rounded-full" type="submit">
           Submit
         </button>
       </form>

@@ -12,7 +12,7 @@ export default function Button({
       {user1.hasOwnProperty("login") &&
         user2.hasOwnProperty("login") &&
         (resetBattle == 0 ? (
-          <button onClick={handleBattleClick} className="btn-fight">
+          <button onClick={handleBattleClick} className="btn-fight rounded-full">
             ⚔️ Battle
           </button>
         ) : (

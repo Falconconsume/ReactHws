@@ -1,0 +1,14 @@
+.homeBorder {
+    border: 2px solid #d0d0d0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
