@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -11,63 +11,58 @@ import RedirectButton from "./RedirectButton";
 import StarIcon from "@mui/icons-material/Star";
 import PeopleIcon from "@mui/icons-material/People";
 import FaceIcon from "@mui/icons-material/Face";
+import thunks from "../../store/thunks";
 
 function RouteRepository() {
-  const [currentRepos, setCurrentRepos] = useState({});
+  const { repository } = useSelector((state) => state.repository);
+  const dispatch = useDispatch();
 
   const { repositoryId } = useParams();
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        `https://api.github.com/repositories/${repositoryId}`
-      );
-      const json = await res.json();
-      setCurrentRepos(json);
-      console.log(currentRepos);
-    })();
-  }, [repositoryId, currentRepos]);
+    dispatch(thunks.fetchRepository(repositoryId));
+  }, [repositoryId]);
 
   return (
     <>
-      {currentRepos.id > 0 ? (
+      {repository.id > 0 ? (
         <Card sx={{ width: 345 }}>
           <CardActionArea>
             <CardMedia
               component="img"
               height="140"
-              image={currentRepos.owner.avatar_url}
+              image={repository.owner.avatar_url}
               alt="green iguana"
             />
             <CardContent
               sx={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               <Typography gutterBottom variant="h5" component="div">
-                {currentRepos.name}
+                {repository.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {currentRepos.description}
+                {repository.description}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
-                <StarIcon /> {currentRepos.stargazers_count}
+                <StarIcon /> {repository.stargazers_count}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
-                <PeopleIcon /> {currentRepos.subscribers_count}
+                <PeopleIcon /> {repository.subscribers_count}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
               >
-                <FaceIcon /> {currentRepos.watchers_count}
+                <FaceIcon /> {repository.watchers_count}
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -75,7 +70,7 @@ function RouteRepository() {
             <Button
               size="small"
               color="primary"
-              href={currentRepos.html_url}
+              href={repository.html_url}
               target="_blank"
             >
               Go to github

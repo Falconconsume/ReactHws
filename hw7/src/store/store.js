@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import gitDashboard from "./slice";
+import languages from "./languagesSlice";
+import repositories from "./repositoriesSlice";
+import repository from "./repositorySlice";
 
 export const store = configureStore({
   reducer: {
-    gitDashboard: gitDashboard,
+    languages: languages,
+    repositories: repositories,
+    repository: repository,
   },
 });

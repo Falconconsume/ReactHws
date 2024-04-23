@@ -8,49 +8,26 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 import RepositoriesAnimation from "./RepositoriesAnimation";
 import Alert from "@mui/material/Alert";
 import { Link } from "react-router-dom";
+import thunks from "../../../store/thunks";
 
 function Repositories() {
-  const [repos, setRepos] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const clickedLanguage = useSelector(
-    (state) => state.gitDashboard.clickedLanguage
+  const { activeLanguage } = useSelector((state) => state.languages);
+  const { repositories, isLoading } = useSelector(
+    (state) => state.repositories
   );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (repos.length > 0) {
-      setLoading(true);
-    }
-  }, [repos]);
-
-  useEffect(() => {
-    (async () => {
-      setLoading(false);
-      const res = await fetch(
-        `https://api.github.com/search/repositories?q=stars:>1000+language:${clickedLanguage}&sort=stars&order=desc&type=Repositories`
-      );
-      const json = await res.json();
-      setRepos(json.items);
-      setLoading(true);
-      console.log(json.items);
-    })();
-  }, [clickedLanguage]);
-
-  const handleClickedRepository = useCallback(
-    (id) => {
-      dispatch(setClickedRepository(id));
-    },
-    [dispatch]
-  );
+    activeLanguage && dispatch(thunks.fetchRepositories(activeLanguage));
+  }, [activeLanguage]);
 
   return (
     <ul className="flex">
-      {!loading ? (
-        <RepositoriesAnimation loading={loading} repos={repos} />
-      ) : repos.length > 0 ? (
-        repos.map((repository, index) => {
+      {isLoading ? (
+        <RepositoriesAnimation loading={isLoading} repos={repositories} />
+      ) : repositories.length > 0 ? (
+        repositories.map((repository, index) => {
           return (
             <Card key={index} sx={{ width: 345 }}>
               <CardActionArea>
@@ -71,11 +48,7 @@ function Repositories() {
               </CardActionArea>
               <CardActions>
                 <Link to={`/repository/${repository.id}`}>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={() => handleClickedRepository(repository.id)}
-                  >
+                  <Button size="small" color="primary">
                     Learn more
                   </Button>
                 </Link>
@@ -85,7 +58,7 @@ function Repositories() {
         })
       ) : (
         <Alert severity="warning">
-          Repositories for {clickedLanguage} not found 😔
+          Repositories for {activeLanguage} not found 😔
         </Alert>
       )}
     </ul>

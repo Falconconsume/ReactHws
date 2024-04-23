@@ -3,13 +3,13 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import AnimationLanguage from "./AnimationLanguage.jsx";
-import { useDispatch } from "react-redux";
-import { setClickedLanguage } from "../../store/slice";
+import { useDispatch, useSelector } from "react-redux";
+import thunks from "../../../store/thunks.js";
+import { setActiveLanguage } from "../../../store/languagesSlice.js";
 
 const Languages = () => {
+  let { languages, isLoading } = useSelector((state) => state.languages);
   const dispatch = useDispatch();
-  const [languages, setLanguages] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [scrollValue, setScrollValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -17,32 +17,18 @@ const Languages = () => {
   };
 
   useEffect(() => {
-    (async function fetchData() {
-      const res = await fetch(
-        "https://api.github.com/repos/microsoft/vscode/languages"
-      );
-      const json = await res.json();
-      console.log(json);
-      setLanguages(Object.keys(json));
-    })();
-  }, []);
+    dispatch(thunks.fetchLanguages());
+  }, [dispatch]);
 
-  useEffect(() => {
-    if (languages.length > 0) {
-      setLoading(true);
-    }
-  }, [languages]);
-
-  const handleChoosingLanguage = useCallback(
-    (language) => {
-      dispatch(setClickedLanguage(language));
-    },
-    [dispatch]
-  );
+  const handleChoosingLanguage = (language) => {
+    dispatch(setActiveLanguage(language));
+  };
 
   return (
     <div>
-      {loading ? (
+      {isLoading ? (
+        <AnimationLanguage loading={isLoading} languages={languages} />
+      ) : (
         <Box
           sx={{ maxWidth: { xs: 2000, sm: 1800 }, bgcolor: "background.paper" }}
         >
@@ -62,8 +48,6 @@ const Languages = () => {
             ))}
           </Tabs>
         </Box>
-      ) : (
-        <AnimationLanguage loading={loading} languages={languages} />
       )}
     </div>
   );

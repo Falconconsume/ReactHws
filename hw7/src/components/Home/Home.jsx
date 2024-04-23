@@ -1,6 +1,6 @@
 import "../../App";
-import Languages from "../Home/Languages.jsx";
-import Repositories from "./Repositories.jsx";
+import Languages from "./languages/Languages.jsx";
+import Repositories from "./repositories/Repositories.jsx";
 
 const Home = () => {
   return (
